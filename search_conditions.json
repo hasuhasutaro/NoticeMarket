@@ -1,4 +1,4 @@
 {
-  "3210037": {"price": 10, "color": "#FF0000"},
-  "2097987865": {"price": 75, "color": "#00FF00"}
+  "3210037": {"price": 10, "color": "#FF0000", "min_quantity": 5},
+  "2097987865": {"price": 75, "color": "#00FF00", "min_quantity": 10}
 }

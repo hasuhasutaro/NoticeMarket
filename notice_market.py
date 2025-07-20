@@ -34,7 +34,7 @@ def ensure_search_conditions():
     if not os.path.exists(SEARCH_CONDITION_PATH):
         # デフォルト値で生成（新形式）
         with open(SEARCH_CONDITION_PATH, "w", encoding="utf-8") as f:
-            json.dump({"3210037": {"price": 10000, "color": "red"}}, f, ensure_ascii=False, indent=2)
+            json.dump({"3210037": {"price": 10000, "color": "red", "min_quantity": 1}}, f, ensure_ascii=False, indent=2)
 
 def load_search_conditions():
     ensure_search_conditions()
@@ -44,7 +44,9 @@ def load_search_conditions():
             # 旧形式対応: intならpriceのみ
             for k, v in data.items():
                 if isinstance(v, int):
-                    data[k] = {"price": v, "color": "reset"}
+                    data[k] = {"price": v, "color": "reset", "min_quantity": 1}
+                elif isinstance(v, dict) and "min_quantity" not in v:
+                    v["min_quantity"] = 1
             return data
     except Exception:
         return {}
@@ -103,7 +105,7 @@ def print_items(items, interval_sec, color_map=None):
 
 async def scrape_market(interval_sec):
     search_conditions = load_search_conditions()
-    async def fetch_and_parse(item_id, max_price, color, session):
+    async def fetch_and_parse(item_id, max_price, color, min_quantity, session):
         url = f"https://bitjita.com/market/item/{item_id}?hasOrders=true"
         try:
             async with session.get(url) as response:
@@ -111,6 +113,11 @@ async def scrape_market(interval_sec):
             soup = BeautifulSoup(html, "html.parser")
             notify_items = []
             sell_orders_header = soup.find(string=lambda t: t and 'Sell Orders' in t)
+            def parse_int(val):
+                try:
+                    return int(val)
+                except:
+                    return 0
             if sell_orders_header:
                 table = sell_orders_header.find_parent().find_next('table')
                 if table:
@@ -129,7 +136,7 @@ async def scrape_market(interval_sec):
                                 price = int(price_text.replace('C', '').replace(',', '').strip())
                             except:
                                 price = 0
-                            if price <= int(max_price):
+                            if price <= int(max_price) and parse_int(quantity) >= min_quantity:
                                 notify_items.append([name, price, quantity, location])
                 else:
                     next_elem = sell_orders_header.find_parent().find_next_sibling()
@@ -144,7 +151,7 @@ async def scrape_market(interval_sec):
                                     price = int(price_text.replace('C', '').replace(',', '').strip())
                                 except:
                                     price = 0
-                                if price <= int(max_price):
+                                if price <= int(max_price) and parse_int(quantity) >= min_quantity:
                                     notify_items.append([name, price, quantity, location])
                                     found = True
                         next_elem = next_elem.find_next_sibling()
@@ -161,8 +168,9 @@ async def scrape_market(interval_sec):
                 cond = search_conditions[item_id]
                 max_price = cond.get("price", cond if isinstance(cond, int) else 0)
                 color = cond.get("color", "reset")
+                min_quantity = cond.get("min_quantity", 1)
                 colors.append(color)
-                tasks.append(fetch_and_parse(item_id, max_price, color, session))
+                tasks.append(fetch_and_parse(item_id, max_price, color, min_quantity, session))
             notify_lists = await asyncio.gather(*tasks)
             all_results = []
             color_map = []
