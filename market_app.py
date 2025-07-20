@@ -114,30 +114,46 @@ class MarketApp(tk.Tk):
         self.listbox_suggest = tk.Listbox(self.frm_condition, width=40, height=6, bg="#23272a", fg="#f5f6fa", selectbackground="#3a3f4b", selectforeground="#ffffff", highlightbackground="#23272a", highlightcolor="#23272a")
         self.listbox_suggest.pack(side=tk.LEFT, padx=(125,4), pady=4)
 
+        import threading
+        self._suggest_thread = None
+        self._suggest_cancel = threading.Event()
+
         def update_suggest_list(event=None):
+            # 前回スレッドがあればキャンセル
+            if self._suggest_thread and self._suggest_thread.is_alive():
+                self._suggest_cancel.set()
+                self._suggest_thread.join(timeout=0.1)
+            self._suggest_cancel.clear()
             current = self.ent_item.get()
             words = [w for w in current.lower().split() if w]
-            all_values = self.item_candidates
-            if words:
-                filtered = [v for v in all_values if all(word in v.lower() for word in words)]
-                def sort_key(v):
-                    v_lower = v.lower()
-                    joined = " ".join(words)
-                    if v_lower == joined:
-                        return (0, 0, v_lower)
-                    if all(v_lower.find(word) == 0 for word in words):
-                        return (1, 0, v_lower)
-                    if all(word in v_lower for word in words):
-                        total_idx = sum(v_lower.find(word) for word in words)
-                        return (2, total_idx, v_lower)
-                    return (3, 9999, v_lower)
-                values = sorted(filtered, key=sort_key)
-            else:
-                values = all_values
-            self.listbox_suggest.delete(0, tk.END)
-            for v in values:
-                self.listbox_suggest.insert(tk.END, v)
-            # 横並びなので空でも非表示にしない
+            all_values = self.item_candidates[:]
+            def worker():
+                if words:
+                    filtered = [v for v in all_values if all(word in v.lower() for word in words)]
+                    def sort_key(v):
+                        v_lower = v.lower()
+                        joined = " ".join(words)
+                        if v_lower == joined:
+                            return (0, 0, v_lower)
+                        if all(v_lower.find(word) == 0 for word in words):
+                            return (1, 0, v_lower)
+                        if all(word in v_lower for word in words):
+                            total_idx = sum(v_lower.find(word) for word in words)
+                            return (2, total_idx, v_lower)
+                        return (3, 9999, v_lower)
+                    values = sorted(filtered, key=sort_key)
+                else:
+                    values = all_values
+                # キャンセルされていれば何もしない
+                if self._suggest_cancel.is_set():
+                    return
+                def update_listbox():
+                    self.listbox_suggest.delete(0, tk.END)
+                    for v in values:
+                        self.listbox_suggest.insert(tk.END, v)
+                self.after(0, update_listbox)
+            self._suggest_thread = threading.Thread(target=worker, daemon=True)
+            self._suggest_thread.start()
 
         def on_suggest_select(event):
             if self.listbox_suggest.curselection():
@@ -374,7 +390,9 @@ class MarketApp(tk.Tk):
                 except Exception:
                     print(msg)
         threading.Thread(target=run_with_error_popup, daemon=True).start()
-        self.after(2000, self.update_market)
+        # 設定値 interval_sec を使う
+        interval_sec = self.settings.get('interval_sec', 2)
+        self.after(int(interval_sec * 1000), self.update_market)
 
     def fetch_and_display_market(self):
         try:
@@ -462,7 +480,7 @@ class MarketApp(tk.Tk):
         last_item_name = None
         color_idx = 0
         for item in filtered:
-            region_display = f"{item['regionName']} (R{item['regionId']})" if 'regionId' in item else item.get('regionName', '')
+            place_display = f"(R{item['regionId']}) {item['claimName']}" if 'regionId' in item else item.get('claimName', '')
             item_name = item["itemName"]
             if item_name != last_item_name:
                 color_idx = 1 - color_idx  # 交互に切り替え
@@ -471,7 +489,7 @@ class MarketApp(tk.Tk):
             rarity = item["itemRarityStr"]
             iid = self.tree.insert("", tk.END, values=(
                 item["itemName"], item["itemTier"], item["itemRarityStr"],
-                item["priceThreshold"], item["quantity"], region_display
+                item["priceThreshold"], item["quantity"], place_display
             ), tags=(tagname, f"rarity_{rarity}"))
         # 背景色タグ設定・全体の文字色は白
         self.tree.tag_configure("bg0", background=bg_colors[0], foreground="#f5f6fa")

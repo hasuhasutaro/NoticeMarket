@@ -3,7 +3,7 @@ import os
 
 SEARCH_CONDITION_PATH = "search_conditions.json"
 SETTINGS_PATH = "settings.json"
-DEFAULT_SETTINGS = {"interval_sec": 5, "max_display": 10}
+DEFAULT_SETTINGS = {"interval_sec": 10, "max_display": 10}
 
 def ensure_settings():
     if not os.path.exists(SETTINGS_PATH):

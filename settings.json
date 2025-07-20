@@ -1,4 +1,4 @@
 {
-  "interval_sec": 5,
-  "max_display": 10
+  "interval_sec": 10,
+  "max_display": 3
 }
