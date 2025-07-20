@@ -1,4 +1,10 @@
 {
-  "3210037": {"price": 10, "color": "#FF0000", "min_quantity": 5},
-  "2097987865": {"price": 75, "color": "#00FF00", "min_quantity": 10}
+  "1110015": {
+    "max_price": 50,
+    "min_quantity": 150
+  },
+  "1210037": {
+    "max_price": 1,
+    "min_quantity": 50
+  }
 }
