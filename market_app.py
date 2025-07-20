@@ -184,14 +184,12 @@ class MarketApp(tk.Tk):
         self._last_selected_idx = None
 
     def on_condition_selected(self, event):
-        # 条件一覧で選択されたitemIdを内部で保持し、フォームに反映（編集可能に）
         selection = self.lst_conditions.curselection()
         if not selection:
             self.selected_itemid = None
             self._last_selected_idx = None
             return
         idx = selection[0]
-        # すでに選択中の行をもう一度クリックした場合は選択解除＆フォームクリア
         if hasattr(self, '_last_selected_idx') and self._last_selected_idx == idx:
             self.lst_conditions.selection_clear(0, tk.END)
             self.selected_itemid = None
@@ -201,13 +199,12 @@ class MarketApp(tk.Tk):
             self._last_selected_idx = None
             return
         self._last_selected_idx = idx
-        line = self.lst_conditions.get(idx)
-        name = line.split("/", 1)[0].strip()
-        items = load_items_json()
-        name2id = {item['name']: str(item['id']) for item in items}
-        itemid = name2id.get(name)
+        # 裏で持っているitemidリストから取得
+        if hasattr(self, '_condition_itemids') and idx < len(self._condition_itemids):
+            itemid = self._condition_itemids[idx]
+        else:
+            itemid = None
         self.selected_itemid = itemid
-        # 検索条件をフォームに反映
         if itemid and itemid in self.search_conditions:
             cond = self.search_conditions[itemid]
             candidate = None
@@ -218,7 +215,7 @@ class MarketApp(tk.Tk):
             if candidate:
                 self.cmb_item.set(candidate)
             else:
-                self.cmb_item.set(name)
+                self.cmb_item.set("")
             self.ent_maxprice.delete(0, tk.END)
             self.ent_maxprice.insert(0, cond.get('max_price', ''))
             self.ent_minqty.delete(0, tk.END)
@@ -288,10 +285,15 @@ class MarketApp(tk.Tk):
     def update_condition_listbox(self):
         self.lst_conditions.delete(0, tk.END)
         itemid_name_map = itemid_to_name_map()
+        self._condition_itemids = []  # itemidのリストを裏で持つ
         for itemid, cond in self.search_conditions.items():
             sid = str(itemid)
             name = itemid_name_map.get(sid, f"(id:{sid})")
-            self.lst_conditions.insert(tk.END, f"{name} / 最大価格: {cond.get('max_price')} / 最小個数: {cond.get('min_quantity')}")
+            self.lst_conditions.insert(
+                tk.END,
+                f"{name} / 最大価格: {cond.get('max_price')} / 最小個数: {cond.get('min_quantity')}"
+            )
+            self._condition_itemids.append(sid)
 
     def update_market(self):
         threading.Thread(target=self.fetch_and_display_market, daemon=True).start()
@@ -386,6 +388,9 @@ class MarketApp(tk.Tk):
         self.tree.tag_configure("bg1", background=bg_colors[1], foreground="#f5f6fa")
         # レアリティごとの色分けは行わず、全体の文字色は白で統一
 
+from ensure_items_json import ensure_items_json
+
 if __name__ == "__main__":
+    ensure_items_json()
     app = MarketApp()
     app.mainloop()
