@@ -169,7 +169,19 @@ async def scrape_market(interval_sec):
             for idx, item_id in enumerate(item_ids):
                 notify_items = notify_lists[idx]
                 color = colors[idx]
-                sorted_items = sorted(notify_items, key=lambda x: x[1] if isinstance(x[1], int) else float('inf'))
+                # 価格昇順、同価格なら数量降順でソート
+                def parse_int(val):
+                    try:
+                        return int(val)
+                    except:
+                        return 0
+                sorted_items = sorted(
+                    notify_items,
+                    key=lambda x: (
+                        x[1] if isinstance(x[1], int) else float('inf'),
+                        -parse_int(x[2])  # 数量降順
+                    )
+                )
                 for item in sorted_items:
                     all_results.append(item)
                     color_map.append(color)
