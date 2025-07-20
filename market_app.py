@@ -59,9 +59,18 @@ class MarketApp(tk.Tk):
         # アイテム名
         tk.Label(self.frm_top, text="アイテム名/ID", bg="#181a1b", fg="#f5f6fa").pack(side=tk.LEFT, padx=(0, 2))
         items = load_items_json()
-        self.item_candidates = item_candidates(items)
-        self.itemid_map = {c: extract_itemid_from_candidate(c) for c in self.item_candidates}
-        self.cmb_item = AutocompleteCombobox(self.frm_top, completevalues=self.item_candidates, width=32)
+        # サジェスト候補を「アイテム名 (TierX/レア度) (itemid)」形式に
+        self.item_candidates = [
+            f"{item['name']} (Tier{item.get('tier', item.get('itemTier', '?'))}/{item.get('rarity', item.get('itemRarityStr', '?'))}) ({item['id']})"
+            for item in items
+        ]
+        # itemid_mapも新しい形式に合わせて修正
+        import re
+        def extract_itemid(candidate):
+            m = re.search(r'\((\d+)\)$', candidate)
+            return m.group(1) if m else ''
+        self.itemid_map = {c: extract_itemid(c) for c in self.item_candidates}
+        self.cmb_item = AutocompleteCombobox(self.frm_top, completevalues=self.item_candidates, width=40)
         self.cmb_item.pack(side=tk.LEFT, padx=(0, 8))
         self.cmb_item.bind("<Button-1>", self.refresh_combobox_values)
         self.cmb_item.bind("<<ComboboxSelected>>", self.on_item_selected)
@@ -224,10 +233,17 @@ class MarketApp(tk.Tk):
     # on_combobox_keyreleaseは不要
 
     def refresh_combobox_values(self, event=None):
-        # items.jsonから再取得し、候補を更新
+        # items.jsonから再取得し、候補を更新（レアリティも含める）
         items = load_items_json()
-        self.item_candidates = item_candidates(items)
-        self.itemid_map = {c: extract_itemid_from_candidate(c) for c in self.item_candidates}
+        self.item_candidates = [
+            f"{item['name']} (Tier{item.get('tier', item.get('itemTier', '?'))}/{item.get('rarity', item.get('itemRarityStr', '?'))}) ({item['id']})"
+            for item in items
+        ]
+        import re
+        def extract_itemid(candidate):
+            m = re.search(r'\((\d+)\)$', candidate)
+            return m.group(1) if m else ''
+        self.itemid_map = {c: extract_itemid(c) for c in self.item_candidates}
         self.cmb_item["values"] = self.item_candidates
 
     def on_item_selected(self, event):
@@ -263,7 +279,6 @@ class MarketApp(tk.Tk):
         self.search_conditions[itemid] = {"max_price": max_price, "min_quantity": min_qty}
         save_search_conditions(self.search_conditions)
         self.update_condition_listbox()
-        messagebox.showinfo("保存", f"itemId {itemid} の条件を保存しました")
 
     def del_condition(self):
         # 条件一覧で選択されたitemIdまたはドロップダウンで選択されたitemIdを優先
@@ -284,14 +299,17 @@ class MarketApp(tk.Tk):
 
     def update_condition_listbox(self):
         self.lst_conditions.delete(0, tk.END)
-        itemid_name_map = itemid_to_name_map()
+        items = load_items_json()
+        itemid_name_map = {str(item['id']): item['name'] for item in items}
+        itemid_tier_map = {str(item['id']): item.get('tier', item.get('itemTier', '?')) for item in items}
         self._condition_itemids = []  # itemidのリストを裏で持つ
         for itemid, cond in self.search_conditions.items():
             sid = str(itemid)
             name = itemid_name_map.get(sid, f"(id:{sid})")
+            tier = itemid_tier_map.get(sid, '?')
             self.lst_conditions.insert(
                 tk.END,
-                f"{name} / 最大価格: {cond.get('max_price')} / 最小個数: {cond.get('min_quantity')}"
+                f"{name} (Tier{tier}) / 最大価格: {cond.get('max_price')} / 最小個数: {cond.get('min_quantity')}"
             )
             self._condition_itemids.append(sid)
 
