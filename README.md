@@ -4,9 +4,9 @@
 マーケットの指定アイテムを定期監視し、指定価格以下の出品を色付きでCUI表示するツールです。
 
 ## 実行方法
-1. `dist/notice_market.exe` をダブルクリック、またはコマンドプロンプト/PowerShellで実行
+1. `notice_market.exe` をダブルクリック、またはコマンドプロンプト/PowerShellで実行
    ```sh
-   dist\notice_market.exe
+   ./notice_market.exe
    ```
    ※ Pythonや追加インストール不要
 
