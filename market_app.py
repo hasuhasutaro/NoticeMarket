@@ -12,7 +12,7 @@ from tkinter import messagebox
 from ttkwidgets.autocomplete import AutocompleteCombobox
 import os, sys
 from api import fetch_market_item
-from search_conditions import load_search_conditions, save_search_conditions
+from file_manager import SearchConditionManager
 from utils import load_items_json, itemid_to_name_map, item_candidates, extract_itemid_from_candidate
 from config import load_settings
 from settings_utils import save_max_display, load_max_display
@@ -113,32 +113,29 @@ class MarketApp(tk.Tk):
             itemid = self.itemid_map.get(sel)
             if itemid:
                 self.selected_itemid = itemid
-        try:
-            max_price = int(self.ent_maxprice.get())
-            min_price = int(self.ent_minprice.get())
-            min_qty = int(self.ent_minqty.get())
-            max_qty = int(self.ent_maxqty.get())
-        except ValueError:
-            messagebox.showerror("入力エラー", "価格・個数は整数で入力してください")
-            return
-        if not self.ent_maxprice.get().strip().isdigit():
-            messagebox.showerror("入力エラー", "最大価格は整数で入力してください")
-            return
-        if not self.ent_minprice.get().strip().isdigit():
-            messagebox.showerror("入力エラー", "最小価格は整数で入力してください")
-            return
-        if not self.ent_minqty.get().strip().isdigit():
-            messagebox.showerror("入力エラー", "最小個数は整数で入力してください")
-            return
-        if not self.ent_maxqty.get().strip().isdigit():
-            messagebox.showerror("入力エラー", "最大個数は整数で入力してください")
-            return
+        # 未入力は空文字、入力があれば整数変換。バリデーションは必須項目のみ。
+        def parse_int_or_empty(entry):
+            val = entry.get().strip()
+            if val == "":
+                return ""
+            if val.isdigit():
+                return int(val)
+            messagebox.showerror("入力エラー", f"{entry}は整数で入力してください")
+            raise ValueError
+
+        max_price = parse_int_or_empty(self.ent_maxprice)
+        min_price = parse_int_or_empty(self.ent_minprice)
+        min_qty = parse_int_or_empty(self.ent_minqty)
+        max_qty = parse_int_or_empty(self.ent_maxqty)
+
         if not itemid:
             messagebox.showerror("入力エラー", "アイテム名/IDを選択してください")
             return
         # 絞り込み条件に全て渡す（引数順: min_price, max_price, min_qty, max_qty）
         self.condition_manager.add_condition(itemid, min_price, max_price, min_qty, max_qty)
-        save_search_conditions(self.search_conditions)
+        # SearchConditionManagerで保存
+        if hasattr(self, 'search_cond_manager'):
+            self.search_cond_manager.save_conditions(self.search_conditions)
         self.update_condition_listbox()
 
     def del_condition(self):
@@ -150,13 +147,15 @@ class MarketApp(tk.Tk):
             return
         itemid = str(itemid)
         self.condition_manager.del_condition(itemid)
-        save_search_conditions(self.search_conditions)
+        if hasattr(self, 'search_cond_manager'):
+            self.search_cond_manager.save_conditions(self.search_conditions)
         self.selected_itemid = None
         self.lst_conditions.selection_clear(0, tk.END)
         self.update_condition_listbox()
 
     def reload_conditions(self):
-        self.condition_manager.reload_conditions(load_search_conditions)
+        if hasattr(self, 'search_cond_manager'):
+            self.condition_manager.reload_conditions(self.search_cond_manager.load_conditions)
         self.update_condition_listbox()
 
     def update_condition_listbox(self):

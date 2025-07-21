@@ -13,6 +13,6 @@
     "min_price": 1,
     "max_price": 2,
     "min_quantity": 40,
-    "max_quantity": 1000000000
+    "max_quantity": ""
   }
 }

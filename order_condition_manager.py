@@ -46,7 +46,26 @@ class OrderConditionManager:
             max_price = cond.get('max_price', '')
             min_quantity = cond.get('min_quantity', '')
             max_quantity = cond.get('max_quantity', '')
-            entry = f"{itemid}: 最小価格={min_price} 最大価格={max_price} 最小個数={min_quantity} 最大個数={max_quantity}"
+            price_range = ""
+            if min_price != "" and max_price != "":
+                price_range = f"{min_price} <= 価格 <= {max_price}"
+            elif min_price != "":
+                price_range = f"{min_price} <= 価格"
+            elif max_price != "":
+                price_range = f"価格 <= {max_price}"
+            # 個数
+            qty_range = ""
+            if min_quantity != "" and max_quantity != "":
+                qty_range = f"{min_quantity} <= 個数 <= {max_quantity}"
+            elif min_quantity != "":
+                qty_range = f"{min_quantity} <= 個数"
+            elif max_quantity != "":
+                qty_range = f"個数 <= {max_quantity}"
+            entry = f"{name} : "
+            if price_range:
+                entry += f"[ {price_range} ] "
+            if qty_range:
+                entry += f"[ {qty_range} ]"
             if itemid in self.excluded_itemids:
                 entry += " [除外]"
             result.append(entry)

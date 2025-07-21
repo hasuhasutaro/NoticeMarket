@@ -1,18 +1,8 @@
 {
-  "6110025": {
-    "max_price": 100,
-    "min_quantity": 1
-  },
-  "4110010": {
-    "max_price": 10,
-    "min_quantity": 1
-  },
-  "11001": {
-    "max_price": 111,
-    "min_quantity": 1
-  },
-  "5220024": {
-    "max_price": 20,
-    "min_quantity": 100
+  "2110003": {
+    "min_price": "",
+    "max_price": "",
+    "min_quantity": "",
+    "max_quantity": ""
   }
 }

@@ -26,6 +26,7 @@ imports:
  &#8226;   <a href="#collections">collections</a>
  &#8226;   <a href="#collections.abc">collections.abc</a>
  &#8226;   <a href="#config">config</a>
+ &#8226;   <a href="#constants">constants</a>
  &#8226;   <a href="#copyreg">copyreg</a>
  &#8226;   <a href="#datetime">datetime</a>
  &#8226;   <a href="#encodings">encodings</a>
@@ -152,6 +153,8 @@ imports:
  &#8226;   <a href="#encodings.zlib_codec">encodings.zlib_codec</a>
  &#8226;   <a href="#ensure_items_json">ensure_items_json</a>
  &#8226;   <a href="#enum">enum</a>
+ &#8226;   <a href="#error_utils">error_utils</a>
+ &#8226;   <a href="#file_manager">file_manager</a>
  &#8226;   <a href="#functools">functools</a>
  &#8226;   <a href="#genericpath">genericpath</a>
  &#8226;   <a href="#heapq">heapq</a>
@@ -161,6 +164,7 @@ imports:
  &#8226;   <a href="#locale">locale</a>
  &#8226;   <a href="#ntpath">ntpath</a>
  &#8226;   <a href="#operator">operator</a>
+ &#8226;   <a href="#order_fetcher">order_fetcher</a>
  &#8226;   <a href="#os">os</a>
  &#8226;   <a href="#posixpath">posixpath</a>
  &#8226;   <a href="#pyi_rth__tkinter.py">pyi_rth__tkinter.py</a>
@@ -175,13 +179,14 @@ imports:
  &#8226;   <a href="#re._constants">re._constants</a>
  &#8226;   <a href="#re._parser">re._parser</a>
  &#8226;   <a href="#reprlib">reprlib</a>
- &#8226;   <a href="#search_conditions">search_conditions</a>
+ &#8226;   <a href="#resource_manager">resource_manager</a>
  &#8226;   <a href="#settings_utils">settings_utils</a>
  &#8226;   <a href="#sre_compile">sre_compile</a>
  &#8226;   <a href="#sre_constants">sre_constants</a>
  &#8226;   <a href="#sre_parse">sre_parse</a>
  &#8226;   <a href="#stat">stat</a>
  &#8226;   <a href="#sys">sys</a>
+ &#8226;   <a href="#theme_utils">theme_utils</a>
  &#8226;   <a href="#threading">threading</a>
  &#8226;   <a href="#tkinter">tkinter</a>
  &#8226;   <a href="#tkinter.messagebox">tkinter.messagebox</a>
@@ -189,6 +194,7 @@ imports:
  &#8226;   <a href="#traceback">traceback</a>
  &#8226;   <a href="#ttkwidgets.autocomplete">ttkwidgets.autocomplete</a>
  &#8226;   <a href="#types">types</a>
+ &#8226;   <a href="#ui_setup">ui_setup</a>
  &#8226;   <a href="#utils">utils</a>
  &#8226;   <a href="#warnings">warnings</a>
  &#8226;   <a href="#weakref">weakref</a>
@@ -5898,6 +5904,7 @@ imported by:
  &#8226;   <a href="#multiprocessing.queues">multiprocessing.queues</a>
  &#8226;   <a href="#numpy._core.overrides">numpy._core.overrides</a>
  &#8226;   <a href="#numpy._core.records">numpy._core.records</a>
+ &#8226;   <a href="#order_fetcher">order_fetcher</a>
  &#8226;   <a href="#pkgutil">pkgutil</a>
  &#8226;   <a href="#platform">platform</a>
  &#8226;   <a href="#pprint">pprint</a>
@@ -6132,6 +6139,18 @@ imports:
   <div class="import">
 imported by:
     <a href="#market_app.py">market_app.py</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="constants"></a>
+  <a target="code" href="///D:/bitcraft/automation-tools/notificationMarket/constants.py" type="text/plain"><tt>constants</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imported by:
+    <a href="#market_app.py">market_app.py</a>
+ &#8226;   <a href="#ui_setup">ui_setup</a>
 
   </div>
 
@@ -7730,6 +7749,7 @@ imported by:
  &#8226;   <a href="#market_app.py">market_app.py</a>
  &#8226;   <a href="#requests.models">requests.models</a>
  &#8226;   <a href="#requests.sessions">requests.sessions</a>
+ &#8226;   <a href="#treeview_manager">treeview_manager</a>
  &#8226;   <a href="#urllib3.connection">urllib3.connection</a>
  &#8226;   <a href="#xmlrpc.client">xmlrpc.client</a>
  &#8226;   <a href="#yaml.constructor">yaml.constructor</a>
@@ -10946,11 +10966,49 @@ imported by:
 </div>
 
 <div class="node">
+  <a name="error_utils"></a>
+  <a target="code" href="///D:/bitcraft/automation-tools/notificationMarket/error_utils.py" type="text/plain"><tt>error_utils</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#tkinter">tkinter</a>
+ &#8226;   <a href="#tkinter.messagebox">tkinter.messagebox</a>
+ &#8226;   <a href="#traceback">traceback</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#market_app.py">market_app.py</a>
+
+  </div>
+
+</div>
+
+<div class="node">
   <a name="fcntl"></a>
   <a target="code" href="" type="text/plain"><tt>fcntl</tt></a>
 <span class="moduletype">MissingModule</span>  <div class="import">
 imported by:
     <a href="#subprocess">subprocess</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="file_manager"></a>
+  <a target="code" href="///D:/bitcraft/automation-tools/notificationMarket/file_manager.py" type="text/plain"><tt>file_manager</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#json">json</a>
+ &#8226;   <a href="#locale">locale</a>
+ &#8226;   <a href="#os">os</a>
+ &#8226;   <a href="#sys">sys</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#market_app.py">market_app.py</a>
+ &#8226;   <a href="#ui_setup">ui_setup</a>
 
   </div>
 
@@ -12998,13 +13056,13 @@ imported by:
     <a href="#charset_normalizer.models">charset_normalizer.models</a>
  &#8226;   <a href="#config">config</a>
  &#8226;   <a href="#ensure_items_json">ensure_items_json</a>
+ &#8226;   <a href="#file_manager">file_manager</a>
  &#8226;   <a href="#json.decoder">json.decoder</a>
  &#8226;   <a href="#json.encoder">json.encoder</a>
  &#8226;   <a href="#json.scanner">json.scanner</a>
  &#8226;   <a href="#numpy.__config__">numpy.__config__</a>
  &#8226;   <a href="#numpy.testing._private.utils">numpy.testing._private.utils</a>
  &#8226;   <a href="#requests.compat">requests.compat</a>
- &#8226;   <a href="#search_conditions">search_conditions</a>
  &#8226;   <a href="#settings_utils">settings_utils</a>
  &#8226;   <a href="#urllib3._request_methods">urllib3._request_methods</a>
  &#8226;   <a href="#urllib3.contrib.emscripten.fetch">urllib3.contrib.emscripten.fetch</a>
@@ -13137,8 +13195,10 @@ imported by:
     <a href="#_pydecimal">_pydecimal</a>
  &#8226;   <a href="#_strptime">_strptime</a>
  &#8226;   <a href="#calendar">calendar</a>
+ &#8226;   <a href="#file_manager">file_manager</a>
  &#8226;   <a href="#gettext">gettext</a>
  &#8226;   <a href="#market_app.py">market_app.py</a>
+ &#8226;   <a href="#resource_manager">resource_manager</a>
  &#8226;   <a href="#subprocess">subprocess</a>
  &#8226;   <a href="#tkinter.filedialog">tkinter.filedialog</a>
 
@@ -20967,6 +21027,40 @@ imported by:
 </div>
 
 <div class="node">
+  <a name="order_condition_manager"></a>
+  <a target="code" href="///D:/bitcraft/automation-tools/notificationMarket/order_condition_manager.py" type="text/plain"><tt>order_condition_manager</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#utils">utils</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#ui_setup">ui_setup</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="order_fetcher"></a>
+  <a target="code" href="///D:/bitcraft/automation-tools/notificationMarket/order_fetcher.py" type="text/plain"><tt>order_fetcher</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#collections">collections</a>
+ &#8226;   <a href="#queue">queue</a>
+ &#8226;   <a href="#threading">threading</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#market_app.py">market_app.py</a>
+
+  </div>
+
+</div>
+
+<div class="node">
   <a name="os"></a>
   <a target="code" href="///C:/Users/kitsu/AppData/Local/Programs/Python/Python312/Lib/os.py" type="text/plain"><tt>os</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
@@ -21038,6 +21132,7 @@ imported by:
  &#8226;   <a href="#doctest">doctest</a>
  &#8226;   <a href="#email.utils">email.utils</a>
  &#8226;   <a href="#ensure_items_json">ensure_items_json</a>
+ &#8226;   <a href="#file_manager">file_manager</a>
  &#8226;   <a href="#fileinput">fileinput</a>
  &#8226;   <a href="#fnmatch">fnmatch</a>
  &#8226;   <a href="#genericpath">genericpath</a>
@@ -21116,8 +21211,8 @@ imported by:
  &#8226;   <a href="#requests.auth">requests.auth</a>
  &#8226;   <a href="#requests.sessions">requests.sessions</a>
  &#8226;   <a href="#requests.utils">requests.utils</a>
+ &#8226;   <a href="#resource_manager">resource_manager</a>
  &#8226;   <a href="#runpy">runpy</a>
- &#8226;   <a href="#search_conditions">search_conditions</a>
  &#8226;   <a href="#settings_utils">settings_utils</a>
  &#8226;   <a href="#shlex">shlex</a>
  &#8226;   <a href="#shutil">shutil</a>
@@ -21171,6 +21266,17 @@ imported by:
  &#8226;   <a href="#sysconfig">sysconfig</a>
  &#8226;   <a href="#tracemalloc">tracemalloc</a>
  &#8226;   <a href="#unittest.util">unittest.util</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="panel_toggle_manager"></a>
+  <a target="code" href="///D:/bitcraft/automation-tools/notificationMarket/panel_toggle_manager.py" type="text/plain"><tt>panel_toggle_manager</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imported by:
+    <a href="#ui_setup">ui_setup</a>
 
   </div>
 
@@ -21431,6 +21537,22 @@ imported by:
 </div>
 
 <div class="node">
+  <a name="price_quantity_form"></a>
+  <a target="code" href="///D:/bitcraft/automation-tools/notificationMarket/price_quantity_form.py" type="text/plain"><tt>price_quantity_form</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#tkinter">tkinter</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#ui_setup">ui_setup</a>
+
+  </div>
+
+</div>
+
+<div class="node">
   <a name="psutil"></a>
   <a target="code" href="" type="text/plain"><tt>psutil</tt></a>
 <span class="moduletype">MissingModule</span>  <div class="import">
@@ -21615,6 +21737,7 @@ imported by:
  &#8226;   <a href="#multiprocessing.managers">multiprocessing.managers</a>
  &#8226;   <a href="#multiprocessing.pool">multiprocessing.pool</a>
  &#8226;   <a href="#multiprocessing.queues">multiprocessing.queues</a>
+ &#8226;   <a href="#order_fetcher">order_fetcher</a>
  &#8226;   <a href="#urllib3.connectionpool">urllib3.connectionpool</a>
 
   </div>
@@ -21796,6 +21919,7 @@ imported by:
  &#8226;   <a href="#ttkwidgets.utilities">ttkwidgets.utilities</a>
  &#8226;   <a href="#ttkwidgets.validated_entries.validators">ttkwidgets.validated_entries.validators</a>
  &#8226;   <a href="#typing">typing</a>
+ &#8226;   <a href="#ui_setup">ui_setup</a>
  &#8226;   <a href="#unittest.case">unittest.case</a>
  &#8226;   <a href="#unittest.loader">unittest.loader</a>
  &#8226;   <a href="#urllib.parse">urllib.parse</a>
@@ -22414,6 +22538,24 @@ imported by:
 </div>
 
 <div class="node">
+  <a name="resource_manager"></a>
+  <a target="code" href="///D:/bitcraft/automation-tools/notificationMarket/resource_manager.py" type="text/plain"><tt>resource_manager</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#locale">locale</a>
+ &#8226;   <a href="#os">os</a>
+ &#8226;   <a href="#sys">sys</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#market_app.py">market_app.py</a>
+
+  </div>
+
+</div>
+
+<div class="node">
   <a name="runpy"></a>
   <a target="code" href="///C:/Users/kitsu/AppData/Local/Programs/Python/Python312/Lib/runpy.py" type="text/plain"><tt>runpy</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
@@ -22431,23 +22573,6 @@ imports:
 imported by:
     <a href="#multiprocessing.spawn">multiprocessing.spawn</a>
  &#8226;   <a href="#pdb">pdb</a>
-
-  </div>
-
-</div>
-
-<div class="node">
-  <a name="search_conditions"></a>
-  <a target="code" href="///D:/bitcraft/automation-tools/notificationMarket/search_conditions.py" type="text/plain"><tt>search_conditions</tt></a>
-<span class="moduletype">SourceModule</span>  <div class="import">
-imports:
-    <a href="#json">json</a>
- &#8226;   <a href="#os">os</a>
-
-  </div>
-  <div class="import">
-imported by:
-    <a href="#market_app.py">market_app.py</a>
 
   </div>
 
@@ -23028,6 +23153,23 @@ imported by:
 </div>
 
 <div class="node">
+  <a name="suggest_entry"></a>
+  <a target="code" href="///D:/bitcraft/automation-tools/notificationMarket/suggest_entry.py" type="text/plain"><tt>suggest_entry</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#threading">threading</a>
+ &#8226;   <a href="#tkinter">tkinter</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#ui_setup">ui_setup</a>
+
+  </div>
+
+</div>
+
+<div class="node">
   <a name="sys"></a>
   <tt>sys</tt> <span class="moduletype"><i>(builtin module)</i></span>  <div class="import">
 imported by:
@@ -23092,6 +23234,7 @@ imported by:
  &#8226;   <a href="#encodings.utf_16">encodings.utf_16</a>
  &#8226;   <a href="#encodings.utf_32">encodings.utf_32</a>
  &#8226;   <a href="#enum">enum</a>
+ &#8226;   <a href="#file_manager">file_manager</a>
  &#8226;   <a href="#fileinput">fileinput</a>
  &#8226;   <a href="#fractions">fractions</a>
  &#8226;   <a href="#ftplib">ftplib</a>
@@ -23176,6 +23319,7 @@ imported by:
  &#8226;   <a href="#requests.packages">requests.packages</a>
  &#8226;   <a href="#requests.sessions">requests.sessions</a>
  &#8226;   <a href="#requests.utils">requests.utils</a>
+ &#8226;   <a href="#resource_manager">resource_manager</a>
  &#8226;   <a href="#runpy">runpy</a>
  &#8226;   <a href="#selectors">selectors</a>
  &#8226;   <a href="#shlex">shlex</a>
@@ -23366,6 +23510,24 @@ imported by:
 </div>
 
 <div class="node">
+  <a name="theme_utils"></a>
+  <a target="code" href="///D:/bitcraft/automation-tools/notificationMarket/theme_utils.py" type="text/plain"><tt>theme_utils</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#tkinter">tkinter</a>
+ &#8226;   <a href="#tkinter.ttk">tkinter.ttk</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#market_app.py">market_app.py</a>
+ &#8226;   <a href="#ui_setup">ui_setup</a>
+
+  </div>
+
+</div>
+
+<div class="node">
   <a name="threading"></a>
   <a target="code" href="///C:/Users/kitsu/AppData/Local/Programs/Python/Python312/Lib/threading.py" type="text/plain"><tt>threading</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
@@ -23414,12 +23576,14 @@ imported by:
  &#8226;   <a href="#multiprocessing.util">multiprocessing.util</a>
  &#8226;   <a href="#numpy.random.bit_generator">numpy.random.bit_generator</a>
  &#8226;   <a href="#numpy.testing._private.utils">numpy.testing._private.utils</a>
+ &#8226;   <a href="#order_fetcher">order_fetcher</a>
  &#8226;   <a href="#pydoc">pydoc</a>
  &#8226;   <a href="#queue">queue</a>
  &#8226;   <a href="#requests.auth">requests.auth</a>
  &#8226;   <a href="#requests.cookies">requests.cookies</a>
  &#8226;   <a href="#socketserver">socketserver</a>
  &#8226;   <a href="#subprocess">subprocess</a>
+ &#8226;   <a href="#suggest_entry">suggest_entry</a>
  &#8226;   <a href="#sysconfig">sysconfig</a>
  &#8226;   <a href="#urllib3._collections">urllib3._collections</a>
  &#8226;   <a href="#urllib3.connection">urllib3.connection</a>
@@ -23523,7 +23687,11 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#market_app.py">market_app.py</a>
+    <a href="#error_utils">error_utils</a>
+ &#8226;   <a href="#market_app.py">market_app.py</a>
+ &#8226;   <a href="#price_quantity_form">price_quantity_form</a>
+ &#8226;   <a href="#suggest_entry">suggest_entry</a>
+ &#8226;   <a href="#theme_utils">theme_utils</a>
  &#8226;   <a href="#tkinter.commondialog">tkinter.commondialog</a>
  &#8226;   <a href="#tkinter.constants">tkinter.constants</a>
  &#8226;   <a href="#tkinter.dialog">tkinter.dialog</a>
@@ -23532,6 +23700,7 @@ imported by:
  &#8226;   <a href="#tkinter.messagebox">tkinter.messagebox</a>
  &#8226;   <a href="#tkinter.simpledialog">tkinter.simpledialog</a>
  &#8226;   <a href="#tkinter.ttk">tkinter.ttk</a>
+ &#8226;   <a href="#treeview_manager">treeview_manager</a>
  &#8226;   <a href="#ttkwidgets.autocomplete.autocomplete_entry">ttkwidgets.autocomplete.autocomplete_entry</a>
  &#8226;   <a href="#ttkwidgets.autocomplete.autocomplete_entrylistbox">ttkwidgets.autocomplete.autocomplete_entrylistbox</a>
  &#8226;   <a href="#ttkwidgets.autocomplete.autocompletecombobox">ttkwidgets.autocomplete.autocompletecombobox</a>
@@ -23546,6 +23715,7 @@ imported by:
  &#8226;   <a href="#ttkwidgets.table">ttkwidgets.table</a>
  &#8226;   <a href="#ttkwidgets.tickscale">ttkwidgets.tickscale</a>
  &#8226;   <a href="#ttkwidgets.timeline">ttkwidgets.timeline</a>
+ &#8226;   <a href="#ui_setup">ui_setup</a>
 
   </div>
 
@@ -23652,7 +23822,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#market_app.py">market_app.py</a>
+    <a href="#error_utils">error_utils</a>
+ &#8226;   <a href="#market_app.py">market_app.py</a>
  &#8226;   <a href="#tkinter">tkinter</a>
  &#8226;   <a href="#tkinter.simpledialog">tkinter.simpledialog</a>
 
@@ -23688,6 +23859,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#market_app.py">market_app.py</a>
+ &#8226;   <a href="#theme_utils">theme_utils</a>
  &#8226;   <a href="#tkinter">tkinter</a>
  &#8226;   <a href="#ttkwidgets.autocomplete.autocomplete_entry">ttkwidgets.autocomplete.autocomplete_entry</a>
  &#8226;   <a href="#ttkwidgets.autocomplete.autocomplete_entrylistbox">ttkwidgets.autocomplete.autocomplete_entrylistbox</a>
@@ -23776,6 +23948,7 @@ imported by:
  &#8226;   <a href="#code">code</a>
  &#8226;   <a href="#concurrent.futures.process">concurrent.futures.process</a>
  &#8226;   <a href="#doctest">doctest</a>
+ &#8226;   <a href="#error_utils">error_utils</a>
  &#8226;   <a href="#http.cookiejar">http.cookiejar</a>
  &#8226;   <a href="#logging">logging</a>
  &#8226;   <a href="#market_app.py">market_app.py</a>
@@ -23817,6 +23990,23 @@ imports:
   <div class="import">
 imported by:
     <a href="#warnings">warnings</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="treeview_manager"></a>
+  <a target="code" href="///D:/bitcraft/automation-tools/notificationMarket/treeview_manager.py" type="text/plain"><tt>treeview_manager</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#datetime">datetime</a>
+ &#8226;   <a href="#tkinter">tkinter</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#ui_setup">ui_setup</a>
 
   </div>
 
@@ -24599,6 +24789,32 @@ imported by:
  &#8226;   <a href="#urllib3.poolmanager">urllib3.poolmanager</a>
  &#8226;   <a href="#urllib3.util.retry">urllib3.util.retry</a>
  &#8226;   <a href="#urllib3.util.ssltransport">urllib3.util.ssltransport</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="ui_setup"></a>
+  <a target="code" href="///D:/bitcraft/automation-tools/notificationMarket/ui_setup.py" type="text/plain"><tt>ui_setup</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#constants">constants</a>
+ &#8226;   <a href="#file_manager">file_manager</a>
+ &#8226;   <a href="#order_condition_manager">order_condition_manager</a>
+ &#8226;   <a href="#panel_toggle_manager">panel_toggle_manager</a>
+ &#8226;   <a href="#price_quantity_form">price_quantity_form</a>
+ &#8226;   <a href="#re">re</a>
+ &#8226;   <a href="#suggest_entry">suggest_entry</a>
+ &#8226;   <a href="#theme_utils">theme_utils</a>
+ &#8226;   <a href="#tkinter">tkinter</a>
+ &#8226;   <a href="#treeview_manager">treeview_manager</a>
+ &#8226;   <a href="#utils">utils</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#market_app.py">market_app.py</a>
 
   </div>
 
@@ -26137,6 +26353,8 @@ imports:
   <div class="import">
 imported by:
     <a href="#market_app.py">market_app.py</a>
+ &#8226;   <a href="#order_condition_manager">order_condition_manager</a>
+ &#8226;   <a href="#ui_setup">ui_setup</a>
 
   </div>
 

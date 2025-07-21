@@ -96,7 +96,7 @@ def setup_ui(app):
     app.frm_condition = tk.Frame(app.frm_top, bg="#181a1b")
     app.frm_condition.pack(side=tk.TOP, fill=tk.X, padx=(0, 8), pady=(0, 4))
 
-    app.lst_conditions = tk.Listbox(app.frm_condition, width=57, height=6, bg="#23272a", fg="#f5f6fa", selectbackground="#3a3f4b", selectforeground="#ffffff", highlightbackground="#23272a", highlightcolor="#23272a")
+    app.lst_conditions = tk.Listbox(app.frm_condition, width=57, height=6, bg="#23272a", fg="#f5f6fa", selectbackground="#0074D9", selectforeground="#f5f6fa", highlightbackground="#23272a", highlightcolor="#23272a", activestyle='none')
     app.lst_conditions.pack(side=tk.TOP, fill=tk.X, padx=0, pady=4)
     app.lst_conditions.bind("<<ListboxSelect>>", app.on_condition_selected)
     app.lst_conditions.bind("<Double-Button-1>", app.on_condition_double_click)
