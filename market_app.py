@@ -1,3 +1,8 @@
+import sys
+__version__ = "2.1.0"
+if '--version' in sys.argv:
+    print(__version__)
+    sys.exit()
 # -*- coding: utf-8 -*-
 # TODOリファクタ案
 # [ ] UI初期化・イベントバインドをsetup_ui等で整理
