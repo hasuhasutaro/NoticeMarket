@@ -152,15 +152,15 @@ class MarketApp(tk.Tk):
         if itemid and itemid in self.search_conditions:
             cond = self.search_conditions[itemid]
             # idから名前取得はitemid_to_data_map参照
-            candidate = None
+            candidate = ""
             item_data = self.itemid_to_data_map.get(str(itemid))
             if item_data:
-                candidate = item_data.get("name", "")
-            if candidate:
-                self.ent_item.delete(0, tk.END)
-                self.ent_item.insert(0, candidate)
-            else:
-                self.ent_item.delete(0, tk.END)
+                name = item_data.get("name", "")
+                tier = item_data.get("tier", "")
+                rarity = item_data.get("rarity", "")
+                candidate = f"{name} (T{tier}/{rarity}) ({itemid})"
+            self.ent_item.delete(0, tk.END)
+            self.ent_item.insert(0, candidate)
             # すべての値を入力欄に反映
             self.ent_minprice.delete(0, tk.END)
             self.ent_minprice.insert(0, cond.get('min_price', ''))
@@ -233,7 +233,9 @@ class MarketApp(tk.Tk):
         self.lst_conditions.delete(0, tk.END)
         cond_list = self.condition_manager.get_condition_list()
         self._condition_itemids = self.condition_manager.get_condition_itemids()
-        for entry in cond_list:
+        from utils import make_condition_display_entries
+        display_entries = make_condition_display_entries(cond_list, self._condition_itemids, self.get_item_data_by_id)
+        for entry in display_entries:
             self.lst_conditions.insert(tk.END, entry)
     def exclude_condition(self):
         itemid = getattr(self, 'selected_itemid', None)

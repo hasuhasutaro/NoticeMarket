@@ -25,10 +25,9 @@ def name_to_itemid_map(items=None):
 
 
 def item_candidates(items=None):
-    """候補リスト（アイテム名 (id) 形式）を返す"""
     if items is None:
         items = load_items_json()
-    return [f"{item['name']} ({item['id']})" for item in items]
+    return [f"[T{item.get('tier','')} {item.get('rarityStr','')}]{item['name']} ({item['id']})" for item in items]
 
 
 def extract_itemid_from_candidate(candidate):
@@ -36,3 +35,21 @@ def extract_itemid_from_candidate(candidate):
     if "(" in candidate and ")" in candidate:
         return candidate.split("(")[-1].split(")")[0].strip()
     return None
+
+
+def make_condition_display_entries(cond_list, itemid_list, get_item_data_by_id):
+    result = []
+    for idx, entry in enumerate(cond_list):
+        itemid = None
+        if itemid_list and idx < len(itemid_list):
+            itemid = itemid_list[idx]
+        tier = ""
+        rarity = ""
+        if itemid:
+            item_data = get_item_data_by_id(str(itemid))
+            if item_data:
+                tier = item_data.get("tier", "")
+                rarity = item_data.get("rarityStr", "")
+        display_entry = f"[T{tier} {rarity}] {entry}"
+        result.append(display_entry)
+    return result
