@@ -23,21 +23,28 @@ from constants import COLUMNS, COLUMN_LABELS, COLUMN_WIDTHS, COLUMN_ANCHORS, BG_
 
 class MarketApp(tk.Tk):
     def on_sort_changed(self):
-        # 現在表示中のデータを取得し、ソート条件で並び替えて再表示
-        # 直近のfilteredデータを保持している場合はそれを使う
+        # アイテムIDごとにグループ化し、各グループ内でソートして表示
         if hasattr(self, 'filtered_orders'):
             key = self.sort_key_var.get()
             order = self.sort_order_var.get()
-            def sort_func(item):
-                if key == 'price':
-                    v = float(item.get('priceThreshold', 0))
-                elif key == 'quantity':
-                    v = int(item.get('quantity', 0))
-                else:
-                    v = 0
-                return v
             reverse = (order == 'desc')
-            sorted_items = sorted(self.filtered_orders, key=sort_func, reverse=reverse)
+            from collections import defaultdict
+            itemid_groups = defaultdict(list)
+            for item in self.filtered_orders:
+                itemid = str(item.get('itemId'))
+                itemid_groups[itemid].append(item)
+            sorted_items = []
+            for itemid, group in itemid_groups.items():
+                def sort_func(item):
+                    if key == 'price':
+                        v = float(item.get('priceThreshold', 0))
+                    elif key == 'quantity':
+                        v = int(item.get('quantity', 0))
+                    else:
+                        v = 0
+                    return v
+                group_sorted = sorted(group, key=sort_func, reverse=reverse)
+                sorted_items.extend(group_sorted)
             self.treeview_manager.update_tree(sorted_items)
     def on_condition_double_click(self, event):
         self.clear_condition_form()
@@ -58,15 +65,26 @@ class MarketApp(tk.Tk):
         self._last_selected_idx = None
 
     def on_max_display_changed(self, event=None):
-        # Entryの値をsettings.jsonに保存（バリデーションのみ）
+        # Entryの値を直接取得し、空欄なら0にする
+        entry_widget = event.widget if event and hasattr(event, 'widget') else None
+        if entry_widget:
+            val_str = entry_widget.get().strip()
+        else:
+            val_str = str(self.max_display_var.get()).strip()
         try:
-            val = int(self.max_display_var.get())
-            if val < 1:
-                raise ValueError
+            if val_str == "":
+                val = 0
+                # Entryウィジェットがあれば0をセット
+                if entry_widget:
+                    entry_widget.delete(0, tk.END)
+                    entry_widget.insert(0, "1")
+            else:
+                val = int(val_str)
+            if val < 0:
+                val = 0
             self.settings_manager.set('max_display', val)
         except Exception:
-            # 不正値なら元に戻す
-            self.settings_manager.set('max_display', 50)
+            self.settings_manager.set('max_display', 0)
         # ダブルクリックで選択解除＆フォームクリア
         selection = self.lst_conditions.curselection()
         if not selection:
@@ -197,16 +215,23 @@ class MarketApp(tk.Tk):
         from order_fetcher import OrderFetcher
         from error_utils import show_error
         def on_market_fetched(filtered):
-            self.after(0, lambda: self.update_tree(filtered))
+            self.filtered_orders = filtered
+            self.after(0, self.on_sort_changed)
         def run_fetch():
             try:
                 order_fetcher = OrderFetcher(fetch_market_item, order_key="sellOrders")
                 cond_items = list(self.search_conditions.items())
-                self.filtered_orders = order_fetcher.fetch_orders(
+                max_display = self.max_display_var.get()
+                if str(max_display).strip() == "":
+                    max_display = 0
+                else:
+                    max_display = int(max_display)
+                filtered = order_fetcher.fetch_orders(
                     cond_items,
                     self.excluded_itemids,
-                    self.max_display_var.get()
+                    max_display
                 )
+                self.filtered_orders = filtered
                 on_market_fetched(filtered)
             except Exception as e:
                 show_error("マーケット情報取得エラー", e)
