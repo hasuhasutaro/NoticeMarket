@@ -22,6 +22,23 @@ from resource_manager import ResourceManager
 from constants import COLUMNS, COLUMN_LABELS, COLUMN_WIDTHS, COLUMN_ANCHORS, BG_COLORS, FG_COLOR
 
 class MarketApp(tk.Tk):
+    def on_sort_changed(self):
+        # 現在表示中のデータを取得し、ソート条件で並び替えて再表示
+        # 直近のfilteredデータを保持している場合はそれを使う
+        if hasattr(self, 'filtered_orders'):
+            key = self.sort_key_var.get()
+            order = self.sort_order_var.get()
+            def sort_func(item):
+                if key == 'price':
+                    v = float(item.get('priceThreshold', 0))
+                elif key == 'quantity':
+                    v = int(item.get('quantity', 0))
+                else:
+                    v = 0
+                return v
+            reverse = (order == 'desc')
+            sorted_items = sorted(self.filtered_orders, key=sort_func, reverse=reverse)
+            self.treeview_manager.update_tree(sorted_items)
     def on_condition_double_click(self, event):
         self.clear_condition_form()
     def __init__(self):
@@ -185,7 +202,7 @@ class MarketApp(tk.Tk):
             try:
                 order_fetcher = OrderFetcher(fetch_market_item, order_key="sellOrders")
                 cond_items = list(self.search_conditions.items())
-                filtered = order_fetcher.fetch_orders(
+                self.filtered_orders = order_fetcher.fetch_orders(
                     cond_items,
                     self.excluded_itemids,
                     self.max_display_var.get()
