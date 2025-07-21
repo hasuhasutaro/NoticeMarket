@@ -55,6 +55,31 @@ class MarketApp(tk.Tk):
         self.clear_condition_form()
     def __init__(self):
         super().__init__()
+        # items.jsonは初回のみキャッシュ
+        self._items_json_cache = None
+        self._items_path = "items.json"
+        def get_item_data_by_id(itemid):
+            import json
+            if self._items_json_cache is None:
+                try:
+                    with open(self._items_path, encoding="utf-8") as f:
+                        data = json.load(f)
+                        self._items_json_cache = {str(item["id"]): item for item in data.get("items", [])}
+                except Exception:
+                    self._items_json_cache = {}
+            return self._items_json_cache.get(str(itemid), None)
+        self.get_item_data_by_id = get_item_data_by_id
+        self.itemid_to_data_map = {}
+        try:
+            import json
+            with open("search_conditions.json", encoding="utf-8") as f:
+                conds = json.load(f)
+                for itemid in conds.keys():
+                    item_data = self.get_item_data_by_id(itemid)
+                    if item_data:
+                        self.itemid_to_data_map[itemid] = item_data
+        except Exception:
+            pass
         from ui_setup import setup_ui
         setup_ui(self)
 
@@ -126,11 +151,11 @@ class MarketApp(tk.Tk):
         self.selected_itemid = itemid
         if itemid and itemid in self.search_conditions:
             cond = self.search_conditions[itemid]
+            # idから名前取得はitemid_to_data_map参照
             candidate = None
-            for c in self.item_candidates:
-                if self.itemid_map.get(c) == itemid:
-                    candidate = c
-                    break
+            item_data = self.itemid_to_data_map.get(str(itemid))
+            if item_data:
+                candidate = item_data.get("name", "")
             if candidate:
                 self.ent_item.delete(0, tk.END)
                 self.ent_item.insert(0, candidate)
@@ -171,6 +196,12 @@ class MarketApp(tk.Tk):
         if not itemid:
             messagebox.showerror("入力エラー", "アイテム名/IDを選択してください")
             return
+        # 条件追加時にitems.jsonからデータ取得してマップに追加
+        str_itemid = str(itemid)
+        if str_itemid not in self.itemid_to_data_map:
+            item_data = self.get_item_data_by_id(str_itemid)
+            if item_data:
+                self.itemid_to_data_map[str_itemid] = item_data
         # 絞り込み条件に全て渡す（引数順: min_price, max_price, min_qty, max_qty）
         self.condition_manager.add_condition(itemid, min_price, max_price, min_qty, max_qty)
         # SearchConditionManagerで保存
