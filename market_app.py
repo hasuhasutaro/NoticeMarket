@@ -1,5 +1,5 @@
 import sys
-__version__ = "2.1.0"
+__version__ = "2.1.2"
 if '--version' in sys.argv:
     print(__version__)
     sys.exit()
