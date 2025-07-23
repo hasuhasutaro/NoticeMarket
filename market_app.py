@@ -274,7 +274,9 @@ class MarketApp(tk.Tk):
             except Exception as e:
                 show_error("マーケット情報取得エラー", e)
         threading.Thread(target=run_fetch, daemon=True).start()
-        interval_sec = self.settings.get('interval_sec', 2)
+        interval_sec = self.settings.get('interval_sec', 600)
+        if (interval_sec <= 600):
+            interval_sec = 600
         self.after(int(interval_sec * 1000), self.update_market)
 
     # fetch_and_display_marketはOrderFetcherに一元化したため削除
